@@ -1813,7 +1813,7 @@ export const SADDLE_OPTIMISM_INFOS: { [name: string]: CurveInfo } = {
 
 export const STABLESWAP_FUSE_INFOS: { [name: string]: CurveInfo } = {
     [STABLESWAP_FUSE_POOLS.busdUsdtUsdc]: createSaddleSwapPool({
-        tokens: [FUSE_TOKENS.USDC, FUSE_TOKENS.BUSD, FUSE_TOKENS.USDT],
+        tokens: [FUSE_TOKENS.BUSD, FUSE_TOKENS.USDC, FUSE_TOKENS.USDT],
         pool: STABLESWAP_FUSE_POOLS.busdUsdtUsdc,
         gasSchedule: 150e3,
     }),
