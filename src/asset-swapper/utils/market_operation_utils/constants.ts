@@ -212,7 +212,7 @@ export const SELL_SOURCE_FILTER_BY_CHAIN_ID: Record<ChainId, SourceFilters> = {
         ERC20BridgeSource.AaveV3,
     ]),
     [ChainId.Fuse]: new SourceFilters([
-        // ERC20BridgeSource.VoltDex,
+        ERC20BridgeSource.VoltDex,
         // ERC20BridgeSource.FuseSwap,
         // ERC20BridgeSource.FStable,
         ERC20BridgeSource.VoltStableSwap,
@@ -368,7 +368,7 @@ export const BUY_SOURCE_FILTER_BY_CHAIN_ID: Record<ChainId, SourceFilters> = {
         ERC20BridgeSource.AaveV3,
     ]),
     [ChainId.Fuse]: new SourceFilters([
-        // ERC20BridgeSource.VoltDex,
+        ERC20BridgeSource.VoltDex,
         // ERC20BridgeSource.FuseSwap,
         // ERC20BridgeSource.FStable,
         ERC20BridgeSource.VoltStableSwap,
@@ -401,6 +401,7 @@ export const FEE_QUOTE_SOURCES_BY_CHAIN_ID = valueByChainId<ERC20BridgeSource[]>
         [ChainId.Celo]: [ERC20BridgeSource.UbeSwap, ERC20BridgeSource.SushiSwap],
         [ChainId.Optimism]: [ERC20BridgeSource.UniswapV3],
         [ChainId.Arbitrum]: [ERC20BridgeSource.UniswapV3, ERC20BridgeSource.SushiSwap],
+        [ChainId.Fuse]: [ERC20BridgeSource.VoltDex],
     },
     [],
 );
@@ -2534,6 +2535,13 @@ export const TRADER_JOE_ROUTER_BY_CHAIN_ID = valueByChainId<string>(
     NULL_ADDRESS,
 );
 
+export const VOLTAGE_DEX_ROUTER_BY_CHAIN_ID = valueByChainId<string>(
+    {
+        [ChainId.Fuse]: '0xe3f85aad0c8dd7337427b9df5d0fb741d65eeeb5'
+    },
+    NULL_ADDRESS,
+);
+
 export const UBESWAP_ROUTER_BY_CHAIN_ID = valueByChainId<string>(
     {
         [ChainId.Celo]: '0x7d28570135a2b1930f331c507f65039d4937f66c',
@@ -2938,6 +2946,11 @@ export const DEFAULT_GAS_SCHEDULE: GasSchedule = {
     //
     [ERC20BridgeSource.Velodrome]: () => 160e3,
     [ERC20BridgeSource.Dystopia]: () => 160e3,
+
+    //
+    // Fuse
+    //
+    [ERC20BridgeSource.VoltDex]: uniswapV2CloneGasSchedule,
 };
 
 const DEFAULT_FEE_SCHEDULE: FeeSchedule = Object.keys(DEFAULT_GAS_SCHEDULE).reduce((acc, key) => {

@@ -550,7 +550,7 @@ export enum ERC20BridgeSource {
     // Fuse
     // FuseSwap = 'FuseSwap',
     VoltStableSwap = 'VoltStableSwap',
-    // VoltDex = 'VoltDex',
+    VoltDex = 'VoltDex',
     // FStable = 'FStable',
 }
 

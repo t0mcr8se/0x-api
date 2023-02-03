@@ -503,8 +503,6 @@ export class MarketOperationUtils {
                 _opts,
             );
         }
-        console.log("TODO: delete this log")
-        console.log({marketSideLiquidity})
 
         // Phase 1 Routing
         // We find an optimized path for ALL the DEX and open-orderbook liquidity

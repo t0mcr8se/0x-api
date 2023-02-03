@@ -59,6 +59,7 @@ import {
     UNISWAPV2_ROUTER_BY_CHAIN_ID,
     WAULTSWAP_ROUTER_BY_CHAIN_ID,
     YOSHI_ROUTER_BY_CHAIN_ID,
+    VOLTAGE_DEX_ROUTER_BY_CHAIN_ID,
 } from './constants';
 import { CurveInfo, PlatypusInfo } from './types';
 import { ERC20BridgeSource } from '../../types';
@@ -498,6 +499,7 @@ export function uniswapV2LikeRouterAddress(
         | ERC20BridgeSource.WaultSwap
         | ERC20BridgeSource.ShibaSwap
         | ERC20BridgeSource.TraderJoe
+        | ERC20BridgeSource.VoltDex
         | ERC20BridgeSource.Pangolin
         | ERC20BridgeSource.UbeSwap
         | ERC20BridgeSource.MorpheusSwap
@@ -536,6 +538,8 @@ export function uniswapV2LikeRouterAddress(
             return PANGOLIN_ROUTER_BY_CHAIN_ID[chainId];
         case ERC20BridgeSource.TraderJoe:
             return TRADER_JOE_ROUTER_BY_CHAIN_ID[chainId];
+        case ERC20BridgeSource.VoltDex:
+            return VOLTAGE_DEX_ROUTER_BY_CHAIN_ID[chainId];
         case ERC20BridgeSource.UbeSwap:
             return UBESWAP_ROUTER_BY_CHAIN_ID[chainId];
         case ERC20BridgeSource.MorpheusSwap:

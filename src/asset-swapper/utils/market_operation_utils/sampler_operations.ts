@@ -1550,6 +1550,7 @@ export class SamplerOperations {
                     case ERC20BridgeSource.ShibaSwap:
                     case ERC20BridgeSource.Pangolin:
                     case ERC20BridgeSource.TraderJoe:
+                    case ERC20BridgeSource.VoltDex:
                     case ERC20BridgeSource.UbeSwap:
                     case ERC20BridgeSource.SpiritSwap:
                     case ERC20BridgeSource.SpookySwap:
@@ -1892,6 +1893,7 @@ export class SamplerOperations {
                     case ERC20BridgeSource.ShibaSwap:
                     case ERC20BridgeSource.Pangolin:
                     case ERC20BridgeSource.TraderJoe:
+                    case ERC20BridgeSource.VoltDex:
                     case ERC20BridgeSource.UbeSwap:
                     case ERC20BridgeSource.SpiritSwap:
                     case ERC20BridgeSource.SpookySwap:
