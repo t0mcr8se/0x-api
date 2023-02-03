@@ -1,4 +1,4 @@
-import { ContractAddresses } from '@0x/contract-addresses';
+import { ContractAddresses } from '@t0mcr8se/0x-contract-addresses';
 import { IZeroExContract } from '@0x/contract-wrappers';
 import { FillQuoteTransformerData, FillQuoteTransformerOrderType, findTransformerNonce } from '@0x/protocol-utils';
 

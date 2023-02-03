@@ -1,4 +1,4 @@
-import { ChainId } from '@0x/contract-addresses';
+import { ChainId } from '@t0mcr8se/0x-contract-addresses';
 import { blockchainTests, constants, describe, expect } from '@0x/contracts-test-utils';
 import {
     artifacts as zeroExArtifacts,

@@ -1,4 +1,4 @@
-import { getTokenMetadataIfExists } from '@0x/token-metadata';
+import { getTokenMetadataIfExists } from '@t0mcr8se/0x-token-metadata';
 import { MarketOperation } from '@0x/types';
 import { BigNumber } from '@0x/utils';
 import { Web3Wrapper } from '@0x/web3-wrapper';

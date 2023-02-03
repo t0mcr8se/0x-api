@@ -1,5 +1,5 @@
 import { isAPIError, isRevertError } from '@0x/api-utils';
-import { isNativeSymbolOrAddress, isNativeWrappedSymbolOrAddress } from '@0x/token-metadata';
+import { isNativeSymbolOrAddress, isNativeWrappedSymbolOrAddress } from '@t0mcr8se/0x-token-metadata';
 import { MarketOperation } from '@0x/types';
 import { BigNumber, NULL_ADDRESS } from '@0x/utils';
 import * as express from 'express';

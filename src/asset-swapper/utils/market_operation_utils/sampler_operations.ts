@@ -1,4 +1,4 @@
-import { ChainId } from '@0x/contract-addresses';
+import { ChainId } from '@t0mcr8se/0x-contract-addresses';
 import { LimitOrderFields } from '@0x/protocol-utils';
 import { BigNumber, logUtils } from '@0x/utils';
 import { formatBytes32String } from '@ethersproject/strings';
@@ -1588,6 +1588,7 @@ export class SamplerOperations {
                     case ERC20BridgeSource.Belt:
                     case ERC20BridgeSource.Ellipsis:
                     case ERC20BridgeSource.Saddle:
+                    case ERC20BridgeSource.VoltStableSwap:
                     case ERC20BridgeSource.FirebirdOneSwap:
                     case ERC20BridgeSource.IronSwap:
                     case ERC20BridgeSource.ACryptos:
@@ -1928,6 +1929,7 @@ export class SamplerOperations {
                     case ERC20BridgeSource.Belt:
                     case ERC20BridgeSource.Ellipsis:
                     case ERC20BridgeSource.Saddle:
+                    case ERC20BridgeSource.VoltStableSwap:
                     case ERC20BridgeSource.FirebirdOneSwap:
                     case ERC20BridgeSource.IronSwap:
                     case ERC20BridgeSource.ACryptos:

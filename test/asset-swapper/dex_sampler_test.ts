@@ -1,4 +1,4 @@
-import { ChainId, getContractAddressesForChainOrThrow } from '@0x/contract-addresses';
+import { ChainId, getContractAddressesForChainOrThrow } from '@t0mcr8se/0x-contract-addresses';
 import { constants, expect, getRandomFloat, getRandomInteger, randomAddress } from '@0x/contracts-test-utils';
 import { FillQuoteTransformerOrderType, LimitOrderFields, SignatureType } from '@0x/protocol-utils';
 import { BigNumber, hexUtils, NULL_ADDRESS } from '@0x/utils';

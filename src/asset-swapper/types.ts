@@ -1,4 +1,4 @@
-import { ChainId } from '@0x/contract-addresses';
+import { ChainId } from '@t0mcr8se/0x-contract-addresses';
 import { BlockParam, ContractAddresses, GethCallOverrides } from '@0x/contract-wrappers';
 import {
     FillQuoteTransformerOrderType,
@@ -547,6 +547,11 @@ export enum ERC20BridgeSource {
     Yoshi = 'Yoshi',
     // Optimism
     Velodrome = 'Velodrome',
+    // Fuse
+    // FuseSwap = 'FuseSwap',
+    VoltStableSwap = 'VoltStableSwap',
+    // VoltDex = 'VoltDex',
+    // FStable = 'FStable',
 }
 
 // Internal `fillData` field for `Fill` objects.

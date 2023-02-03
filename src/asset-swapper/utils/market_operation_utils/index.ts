@@ -36,6 +36,7 @@ import {
 import { getComparisonPrices } from './comparison_price';
 import {
     BUY_SOURCE_FILTER_BY_CHAIN_ID,
+    COMPARISON_PRICE_DECIMALS,
     DEFAULT_GET_MARKET_ORDERS_OPTS,
     FEE_QUOTE_SOURCES_BY_CHAIN_ID,
     NATIVE_FEE_TOKEN_AMOUNT_BY_CHAIN_ID,
@@ -502,6 +503,8 @@ export class MarketOperationUtils {
                 _opts,
             );
         }
+        console.log("TODO: delete this log")
+        console.log({marketSideLiquidity})
 
         // Phase 1 Routing
         // We find an optimized path for ALL the DEX and open-orderbook liquidity

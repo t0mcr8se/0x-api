@@ -1,4 +1,4 @@
-import { ContractAddresses, getContractAddressesForChainOrThrow } from '@0x/contract-addresses';
+import { ContractAddresses, getContractAddressesForChainOrThrow } from '@t0mcr8se/0x-contract-addresses';
 import { constants as contractConstants, getRandomInteger, randomAddress } from '@0x/contracts-test-utils';
 import {
     BridgeProtocol,

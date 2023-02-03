@@ -1,4 +1,4 @@
-import { ChainId, getContractAddressesForChainOrThrow } from '@0x/contract-addresses';
+import { ChainId, getContractAddressesForChainOrThrow } from '@t0mcr8se/0x-contract-addresses';
 import { FillQuoteTransformerOrderType } from '@0x/protocol-utils';
 import { BigNumber } from '@0x/utils';
 import { formatBytes32String, parseBytes32String } from '@ethersproject/strings';
@@ -43,7 +43,7 @@ export const NULL_ADDRESS = '0x0000000000000000000000000000000000000000';
 export const SAMPLER_ADDRESS = '0x5555555555555555555555555555555555555555';
 export const COMPARISON_PRICE_DECIMALS = 10;
 
-// TODO(kimpers): Consolidate this implementation with the one in @0x/token-metadata
+// TODO(kimpers): Consolidate this implementation with the one in @t0mcr8se/0x-token-metadata
 function valueByChainId<T>(rest: Partial<{ [key in ChainId]: T }>, defaultValue: T): { [key in ChainId]: T } {
     // TODO I don't like this but iterating through enums is weird
     return {
@@ -58,6 +58,7 @@ function valueByChainId<T>(rest: Partial<{ [key in ChainId]: T }>, defaultValue:
         [ChainId.Celo]: defaultValue,
         [ChainId.Optimism]: defaultValue,
         [ChainId.Arbitrum]: defaultValue,
+        [ChainId.Fuse]: defaultValue,
         ...(rest || {}),
     };
 }
@@ -210,6 +211,12 @@ export const SELL_SOURCE_FILTER_BY_CHAIN_ID: Record<ChainId, SourceFilters> = {
         ERC20BridgeSource.Saddle,
         ERC20BridgeSource.AaveV3,
     ]),
+    [ChainId.Fuse]: new SourceFilters([
+        // ERC20BridgeSource.VoltDex,
+        // ERC20BridgeSource.FuseSwap,
+        // ERC20BridgeSource.FStable,
+        ERC20BridgeSource.VoltStableSwap,
+    ]),
 };
 
 /**
@@ -359,6 +366,12 @@ export const BUY_SOURCE_FILTER_BY_CHAIN_ID: Record<ChainId, SourceFilters> = {
         //ERC20BridgeSource.Dodo,
         ERC20BridgeSource.Saddle,
         ERC20BridgeSource.AaveV3,
+    ]),
+    [ChainId.Fuse]: new SourceFilters([
+        // ERC20BridgeSource.VoltDex,
+        // ERC20BridgeSource.FuseSwap,
+        // ERC20BridgeSource.FStable,
+        ERC20BridgeSource.VoltStableSwap,
     ]),
 };
 
@@ -682,6 +695,12 @@ const ARBITRUM_TOKENS = {
     VST: '0x64343594ab9b56e99087bfa6f2335db24c2d1f17',
 };
 
+const FUSE_TOKENS = {
+    USDC: '0x620fd5fa44be6af63715ef4e65ddfa0387ad13f5',
+    BUSD: '0x6a5f6a8121592becd6747a38d67451b310f7f156',
+    USDT: '0xfadbbf8ce7d5b7041be672561bba99f79c532e10'
+}
+
 export const REBASING_TOKENS = new Set<string>([MAINNET_TOKENS.stETH]);
 
 const CURVE_POOLS = {
@@ -818,6 +837,11 @@ const SADDLE_OPTIMISM_POOLS = {
     // swaps
     fraxBP: '0xf6c2e0adc659007ba7c48446f5a4e4e94dfe08b5',
 };
+
+const STABLESWAP_FUSE_POOLS = {
+    // swaps
+    busdUsdtUsdc: '0x2a68d7c6ea986fa06b2665d08b4d08f5e7af960c'
+}
 
 const SADDLE_ARBITRUM_POOLS = {
     // swaps
@@ -1015,6 +1039,11 @@ export const DEFAULT_INTERMEDIATE_TOKENS_BY_CHAIN_ID: Record<ChainId, string[]> 
         ARBITRUM_TOKENS.FRAX,
         ARBITRUM_TOKENS.MIM,
     ],
+    [ChainId.Fuse]: [
+        FUSE_TOKENS.USDC,
+        FUSE_TOKENS.BUSD,
+        FUSE_TOKENS.USDT,
+    ],
     [ChainId.Ganache]: [],
 };
 
@@ -1071,6 +1100,7 @@ export const DEFAULT_TOKEN_ADJACENCY_GRAPH_BY_CHAIN_ID: Record<ChainId, TokenAdj
         .build(),
     [ChainId.Fantom]: new TokenAdjacencyGraphBuilder(DEFAULT_INTERMEDIATE_TOKENS_BY_CHAIN_ID[ChainId.Fantom]).build(),
     [ChainId.Celo]: new TokenAdjacencyGraphBuilder(DEFAULT_INTERMEDIATE_TOKENS_BY_CHAIN_ID[ChainId.Celo]).build(),
+    [ChainId.Fuse]: new TokenAdjacencyGraphBuilder(DEFAULT_INTERMEDIATE_TOKENS_BY_CHAIN_ID[ChainId.Fuse]).build(),
     [ChainId.Arbitrum]: new TokenAdjacencyGraphBuilder(
         DEFAULT_INTERMEDIATE_TOKENS_BY_CHAIN_ID[ChainId.Arbitrum],
     ).build(),
@@ -1114,6 +1144,7 @@ export const NATIVE_FEE_TOKEN_BY_CHAIN_ID = valueByChainId<string>(
         [ChainId.Celo]: getContractAddressesForChainOrThrow(ChainId.Celo).etherToken,
         [ChainId.Optimism]: getContractAddressesForChainOrThrow(ChainId.Optimism).etherToken,
         [ChainId.Arbitrum]: getContractAddressesForChainOrThrow(ChainId.Arbitrum).etherToken,
+        [ChainId.Fuse]: getContractAddressesForChainOrThrow(ChainId.Fuse).etherToken,
     },
     NULL_ADDRESS,
 );
@@ -1776,6 +1807,14 @@ export const SADDLE_OPTIMISM_INFOS: { [name: string]: CurveInfo } = {
     [SADDLE_OPTIMISM_POOLS.fraxBP]: createSaddleSwapPool({
         tokens: [OPTIMISM_TOKENS.USDC, OPTIMISM_TOKENS.FRAX],
         pool: SADDLE_OPTIMISM_POOLS.fraxBP,
+        gasSchedule: 150e3,
+    }),
+};
+
+export const STABLESWAP_FUSE_INFOS: { [name: string]: CurveInfo } = {
+    [STABLESWAP_FUSE_POOLS.busdUsdtUsdc]: createSaddleSwapPool({
+        tokens: [FUSE_TOKENS.USDC, FUSE_TOKENS.BUSD, FUSE_TOKENS.USDT],
+        pool: STABLESWAP_FUSE_POOLS.busdUsdtUsdc,
         gasSchedule: 150e3,
     }),
 };
@@ -2679,6 +2718,7 @@ export const DEFAULT_GAS_SCHEDULE: GasSchedule = {
     [ERC20BridgeSource.Belt]: (fillData) => (fillData as CurveFillData).pool.gasSchedule,
     [ERC20BridgeSource.Ellipsis]: (fillData) => (fillData as CurveFillData).pool.gasSchedule,
     [ERC20BridgeSource.Saddle]: (fillData) => (fillData as CurveFillData).pool.gasSchedule,
+    [ERC20BridgeSource.VoltStableSwap]: (fillData) => (fillData as CurveFillData).pool.gasSchedule,
     [ERC20BridgeSource.IronSwap]: (fillData) => (fillData as CurveFillData).pool.gasSchedule,
     [ERC20BridgeSource.FirebirdOneSwap]: (fillData) => (fillData as CurveFillData).pool.gasSchedule,
     [ERC20BridgeSource.MobiusMoney]: (fillData) => (fillData as CurveFillData).pool.gasSchedule,

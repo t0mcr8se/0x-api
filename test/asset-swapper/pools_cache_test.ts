@@ -1,4 +1,4 @@
-import { ChainId } from '@0x/contract-addresses';
+import { ChainId } from '@t0mcr8se/0x-contract-addresses';
 import * as chai from 'chai';
 import 'mocha';
 

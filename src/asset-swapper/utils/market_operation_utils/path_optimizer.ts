@@ -1,5 +1,5 @@
 import { assert } from '@0x/assert';
-import { ChainId } from '@0x/contract-addresses';
+import { ChainId } from '@t0mcr8se/0x-contract-addresses';
 import { OptimizerCapture, route, SerializedPath } from '@0x/neon-router';
 import { FillQuoteTransformerOrderType } from '@0x/protocol-utils';
 import { BigNumber, hexUtils } from '@0x/utils';

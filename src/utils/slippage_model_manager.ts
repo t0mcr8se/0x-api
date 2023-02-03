@@ -1,4 +1,4 @@
-import { isNativeSymbolOrAddress } from '@0x/token-metadata';
+import { isNativeSymbolOrAddress } from '@t0mcr8se/0x-token-metadata';
 import { BigNumber } from '@0x/utils';
 import { Counter } from 'prom-client';
 

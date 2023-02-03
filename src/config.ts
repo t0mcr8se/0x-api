@@ -1,5 +1,5 @@
 import { assert } from '@0x/assert';
-import { TokenMetadatasForChains, valueByChainId } from '@0x/token-metadata';
+import { TokenMetadatasForChains, valueByChainId } from '@t0mcr8se/0x-token-metadata';
 import { BigNumber } from '@0x/utils';
 import * as fs from 'fs';
 import * as _ from 'lodash';
@@ -481,6 +481,8 @@ const SAMPLER_OVERRIDES: SamplerOverrides | undefined = (() => {
     switch (CHAIN_ID) {
         case ChainId.Ganache:
             return { overrides: {}, block: BlockParamLiteral.Latest };
+        case ChainId.Fuse:
+            return { overrides: {}, block: BlockParamLiteral.Latest, to: '0x5a6d95163efb7e7c764cf3b48d1bc5aab184f38e' }
         default:
             return undefined;
     }

@@ -1,5 +1,5 @@
 import { ValidationError, ValidationErrorCodes } from '@0x/api-utils';
-import { findTokenAddressOrThrow } from '@0x/token-metadata';
+import { findTokenAddressOrThrow } from '@t0mcr8se/0x-token-metadata';
 import { addressUtils } from '@0x/utils';
 
 import { ChainId } from '../asset-swapper';

@@ -1,4 +1,4 @@
-import { ChainId } from '@0x/contract-addresses';
+import { ChainId } from '@t0mcr8se/0x-contract-addresses';
 import { BigNumber, NULL_BYTES } from '@0x/utils';
 
 import { ERC20BridgeSamplerContract } from '../../../wrappers';

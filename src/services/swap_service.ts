@@ -1,6 +1,6 @@
 import { WETH9Contract } from '@0x/contract-wrappers';
 import { ETH_TOKEN_ADDRESS, RevertError } from '@0x/protocol-utils';
-import { getTokenMetadataIfExists } from '@0x/token-metadata';
+import { getTokenMetadataIfExists } from '@t0mcr8se/0x-token-metadata';
 import { MarketOperation } from '@0x/types';
 import { BigNumber, decodeThrownErrorAsRevertError } from '@0x/utils';
 import { TxData, Web3Wrapper } from '@0x/web3-wrapper';

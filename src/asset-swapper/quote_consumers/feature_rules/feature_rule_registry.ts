@@ -1,4 +1,4 @@
-import { ChainId, ContractAddresses } from '@0x/contract-addresses';
+import { ChainId, ContractAddresses } from '@t0mcr8se/0x-contract-addresses';
 import { createExchangeProxyWithoutProvider } from '../quote_consumer_utils';
 import { TransformERC20Rule } from './transform_erc20_rule';
 import { FeatureRuleRegistry, FeatureRule } from './types';

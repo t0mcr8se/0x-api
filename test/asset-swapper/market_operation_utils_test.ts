@@ -1,4 +1,4 @@
-import { ChainId, getContractAddressesForChainOrThrow } from '@0x/contract-addresses';
+import { ChainId, getContractAddressesForChainOrThrow } from '@t0mcr8se/0x-contract-addresses';
 import {
     assertRoughlyEquals,
     constants,
@@ -354,6 +354,17 @@ describe('MarketOperationUtils tests', () => {
             toTokenIdx: 1,
         },
         [ERC20BridgeSource.Saddle]: {
+            pool: {
+                poolAddress: randomAddress(),
+                tokens: [TAKER_TOKEN, MAKER_TOKEN],
+                exchangeFunctionSelector: hexUtils.random(4),
+                sellQuoteFunctionSelector: hexUtils.random(4),
+                buyQuoteFunctionSelector: hexUtils.random(4),
+            },
+            fromTokenIdx: 0,
+            toTokenIdx: 1,
+        },
+        [ERC20BridgeSource.VoltStableSwap]: {
             pool: {
                 poolAddress: randomAddress(),
                 tokens: [TAKER_TOKEN, MAKER_TOKEN],

@@ -1,4 +1,4 @@
-import { ChainId } from '@0x/contract-addresses';
+import { ChainId } from '@t0mcr8se/0x-contract-addresses';
 import { logUtils } from '@0x/utils';
 import { PoolDataService, SubgraphPoolBase } from '@balancer-labs/sor';
 import { gql, request } from 'graphql-request';

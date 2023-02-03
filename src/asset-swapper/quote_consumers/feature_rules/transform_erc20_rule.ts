@@ -1,4 +1,4 @@
-import { ChainId, ContractAddresses } from '@0x/contract-addresses';
+import { ChainId, ContractAddresses } from '@t0mcr8se/0x-contract-addresses';
 import {
     encodeAffiliateFeeTransformerData,
     encodeFillQuoteTransformerData,

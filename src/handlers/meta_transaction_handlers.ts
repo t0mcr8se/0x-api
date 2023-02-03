@@ -1,5 +1,5 @@
 import { isAPIError, isRevertError } from '@0x/api-utils';
-import { isNativeSymbolOrAddress } from '@0x/token-metadata';
+import { isNativeSymbolOrAddress } from '@t0mcr8se/0x-token-metadata';
 import { BigNumber } from '@0x/utils';
 import * as express from 'express';
 import { StatusCodes } from 'http-status-codes';

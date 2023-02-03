@@ -2,7 +2,7 @@ import { WETH9Contract } from '@0x/contract-wrappers';
 import { DummyERC20TokenContract } from '@0x/contracts-erc20';
 import { assertRoughlyEquals, expect } from '@0x/contracts-test-utils';
 import { BlockchainLifecycle, Web3ProviderEngine, Web3Wrapper } from '@0x/dev-utils';
-import { isNativeSymbolOrAddress } from '@0x/token-metadata';
+import { isNativeSymbolOrAddress } from '@t0mcr8se/0x-token-metadata';
 import { BigNumber } from '@0x/utils';
 import { Server } from 'http';
 import * as HttpStatus from 'http-status-codes';

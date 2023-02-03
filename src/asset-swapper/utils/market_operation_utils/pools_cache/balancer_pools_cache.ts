@@ -1,4 +1,4 @@
-import { ChainId } from '@0x/contract-addresses';
+import { ChainId } from '@t0mcr8se/0x-contract-addresses';
 import { getPoolsWithTokens, parsePoolData } from 'balancer-labs-sor-v1';
 import { Pool } from 'balancer-labs-sor-v1/dist/types';
 import { gql, request } from 'graphql-request';

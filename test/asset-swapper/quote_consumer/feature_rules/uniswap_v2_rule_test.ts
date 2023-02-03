@@ -2,7 +2,7 @@ import 'mocha';
 import * as chai from 'chai';
 import { chaiSetup } from '../../utils/chai_setup';
 import { UniswapV2Rule } from '../../../../src/asset-swapper/quote_consumers/feature_rules/uniswap_v2_rule';
-import { ChainId } from '@0x/contract-addresses';
+import { ChainId } from '@t0mcr8se/0x-contract-addresses';
 import { createExchangeProxyWithoutProvider } from '../../../../src/asset-swapper/quote_consumers/quote_consumer_utils';
 import { randomAddress } from '@0x/contracts-test-utils';
 import { createSimpleSellSwapQuoteWithBridgeOrder, NO_AFFILIATE_FEE, ONE_ETHER } from '../../test_utils/test_data';

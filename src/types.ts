@@ -1,7 +1,7 @@
 import { HttpServiceConfig as BaseHttpConfig } from '@0x/api-utils';
 import { ExchangeProxyMetaTransaction } from '@0x/types';
 import { BigNumber } from '@0x/utils';
-import { ContractAddresses, ChainId } from '@0x/contract-addresses';
+import { ContractAddresses, ChainId } from '@t0mcr8se/0x-contract-addresses';
 import { OtcOrder } from '@0x/protocol-utils';
 import { Connection } from 'typeorm';
 import { Kafka } from 'kafkajs';

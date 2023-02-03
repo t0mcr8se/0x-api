@@ -1,4 +1,4 @@
-import { ChainId } from '@0x/contract-addresses';
+import { ChainId } from '@t0mcr8se/0x-contract-addresses';
 import { IZeroExContract } from '@0x/contract-wrappers';
 import { ETH_TOKEN_ADDRESS } from '@0x/protocol-utils';
 import { constants } from '../../constants';
