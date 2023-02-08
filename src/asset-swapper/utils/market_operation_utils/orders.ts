@@ -104,6 +104,8 @@ export function getErc20BridgeSourceToBridgeSource(source: ERC20BridgeSource): s
             return encodeBridgeSourceId(BridgeProtocol.Mooniswap, 'Mooniswap');
         case ERC20BridgeSource.MStable:
             return encodeBridgeSourceId(BridgeProtocol.MStable, 'MStable');
+        case ERC20BridgeSource.FStable:
+            return encodeBridgeSourceId(BridgeProtocol.FStable, 'FStable');
         case ERC20BridgeSource.Shell:
             return encodeBridgeSourceId(BridgeProtocol.Shell, 'Shell');
         case ERC20BridgeSource.SushiSwap:
@@ -328,6 +330,11 @@ export function createBridgeDataForBridgeOrder(order: OptimizedMarketBridgeOrder
             bridgeData = encoder.encode([mStableFillData.router]);
             break;
         }
+        case ERC20BridgeSource.FStable: {
+            const fStableFillData = (order as OptimizedMarketBridgeOrder<GenericRouterFillData>).fillData;
+            bridgeData = encoder.encode([fStableFillData.router]);
+            break;
+        }
         case ERC20BridgeSource.MakerPsm: {
             const psmFillData = (order as OptimizedMarketBridgeOrder<MakerPsmFillData>).fillData;
             bridgeData = encoder.encode([psmFillData.psmAddress, psmFillData.gemTokenAddress]);
@@ -503,6 +510,7 @@ const BRIDGE_ENCODERS: {
     [ERC20BridgeSource.Component]: poolEncoder,
     [ERC20BridgeSource.Mooniswap]: poolEncoder,
     [ERC20BridgeSource.MStable]: poolEncoder,
+    [ERC20BridgeSource.FStable]: poolEncoder,
     [ERC20BridgeSource.Balancer]: poolEncoder,
     [ERC20BridgeSource.Uniswap]: poolEncoder,
     // Custom integrations

@@ -482,7 +482,7 @@ const SAMPLER_OVERRIDES: SamplerOverrides | undefined = (() => {
         case ChainId.Ganache:
             return { overrides: {}, block: BlockParamLiteral.Latest };
         case ChainId.Fuse:
-            return { overrides: {}, block: BlockParamLiteral.Latest, to: '0x5a6d95163efb7e7c764cf3b48d1bc5aab184f38e' }
+            return { overrides: {}, block: BlockParamLiteral.Latest, to: '0xaff9bea615ba1971adfc4cddd0d5412a5620ee46' }
         default:
             return undefined;
     }

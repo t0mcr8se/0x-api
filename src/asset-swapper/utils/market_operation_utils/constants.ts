@@ -214,7 +214,7 @@ export const SELL_SOURCE_FILTER_BY_CHAIN_ID: Record<ChainId, SourceFilters> = {
     [ChainId.Fuse]: new SourceFilters([
         ERC20BridgeSource.VoltDex,
         // ERC20BridgeSource.FuseSwap,
-        // ERC20BridgeSource.FStable,
+        ERC20BridgeSource.FStable,
         ERC20BridgeSource.VoltStableSwap,
     ]),
 };
@@ -370,7 +370,7 @@ export const BUY_SOURCE_FILTER_BY_CHAIN_ID: Record<ChainId, SourceFilters> = {
     [ChainId.Fuse]: new SourceFilters([
         ERC20BridgeSource.VoltDex,
         // ERC20BridgeSource.FuseSwap,
-        // ERC20BridgeSource.FStable,
+        ERC20BridgeSource.FStable,
         ERC20BridgeSource.VoltStableSwap,
     ]),
 };
@@ -2174,6 +2174,22 @@ export const MSTABLE_POOLS_BY_CHAIN_ID = valueByChainId(
     },
 );
 
+export const FSTABLE_POOLS_BY_CHAIN_ID = valueByChainId(
+    {
+        [ChainId.Fuse]: {
+            fUSD: {
+                poolAddress: '0xd0ce1b4a349c35e61af02f5971e71ac502441e49',
+                tokens: [FUSE_TOKENS.USDC, FUSE_TOKENS.BUSD, FUSE_TOKENS.USDT],
+            },
+        },
+    }, {
+        fUSD: {
+            poolAddress: NULL_ADDRESS,
+            tokens: [] as string[],
+        },
+    },
+);
+
 export const KYBER_DMM_ROUTER_BY_CHAIN_ID = valueByChainId<string>(
     {
         [ChainId.Mainnet]: '0x1c87257f5e8609940bc751a07bb085bb7f8cdbe6',
@@ -2742,6 +2758,7 @@ export const DEFAULT_GAS_SCHEDULE: GasSchedule = {
         return 100e3 + ((fillData as BalancerV2BatchSwapFillData).swapSteps.length - 1) * 50e3;
     },
     [ERC20BridgeSource.MStable]: () => 200e3,
+    [ERC20BridgeSource.FStable]: () => 200e3,
     [ERC20BridgeSource.MakerPsm]: (fillData?: FillData) => {
         const psmFillData = fillData as MakerPsmFillData;
         return psmFillData.takerToken === psmFillData.gemTokenAddress ? 210e3 : 290e3;
