@@ -103,7 +103,7 @@
         "@0x/api-utils": "^0.0.10",
         "@0x/assert": "^3.0.35",
         "@0x/base-contract": "^7.0.0",
-        "@t0mcr8se/0x-contract-addresses": "^8.0.0",
+        "@t0mcr8se/0x-contract-addresses": "^8.0.1",
         "@0x/contract-wrappers": "^13.22.12",
         "@0x/contracts-zero-ex": "^0.38.2",
         "@0x/fast-abi": "^0.0.5",

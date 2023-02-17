@@ -105,7 +105,7 @@ export function getErc20BridgeSourceToBridgeSource(source: ERC20BridgeSource): s
         case ERC20BridgeSource.MStable:
             return encodeBridgeSourceId(BridgeProtocol.MStable, 'MStable');
         case ERC20BridgeSource.FStable:
-            return encodeBridgeSourceId(BridgeProtocol.FStable, 'FStable');
+            return encodeBridgeSourceId(BridgeProtocol.MStable, 'FStable');
         case ERC20BridgeSource.Shell:
             return encodeBridgeSourceId(BridgeProtocol.Shell, 'Shell');
         case ERC20BridgeSource.SushiSwap:
