@@ -216,6 +216,7 @@ export const SELL_SOURCE_FILTER_BY_CHAIN_ID: Record<ChainId, SourceFilters> = {
         // ERC20BridgeSource.FuseSwap,
         ERC20BridgeSource.FStable,
         ERC20BridgeSource.VoltStableSwap,
+        ERC20BridgeSource.MultiHop,
     ]),
 };
 
@@ -372,6 +373,7 @@ export const BUY_SOURCE_FILTER_BY_CHAIN_ID: Record<ChainId, SourceFilters> = {
         // ERC20BridgeSource.FuseSwap,
         ERC20BridgeSource.FStable,
         ERC20BridgeSource.VoltStableSwap,
+        ERC20BridgeSource.MultiHop,
     ]),
 };
 
@@ -699,7 +701,12 @@ const ARBITRUM_TOKENS = {
 const FUSE_TOKENS = {
     USDC: '0x620fd5fa44be6af63715ef4e65ddfa0387ad13f5',
     BUSD: '0x6a5f6a8121592becd6747a38d67451b310f7f156',
-    USDT: '0xfadbbf8ce7d5b7041be672561bba99f79c532e10'
+    USDT: '0xfadbbf8ce7d5b7041be672561bba99f79c532e10',
+    WFUSE: '0x0be9e53fd7edac9f859882afdda116645287c629',
+    WETH: '0xd8bf72f3e163b9cf0c73dfdcc316417a5ac20670',
+    WBTC: '0x33284f95ccb7b948d9d352e1439561cf83d8d00d',
+    WBNB: '0x6acb34b1df86e254b544189ec32cf737e2482058',
+    VOLT: '0x34ef2cc892a88415e9f02b91bfa9c91fc0be6bd4',
 }
 
 export const REBASING_TOKENS = new Set<string>([MAINNET_TOKENS.stETH]);
@@ -1044,6 +1051,11 @@ export const DEFAULT_INTERMEDIATE_TOKENS_BY_CHAIN_ID: Record<ChainId, string[]> 
         FUSE_TOKENS.USDC,
         FUSE_TOKENS.BUSD,
         FUSE_TOKENS.USDT,
+        FUSE_TOKENS.WBNB,
+        FUSE_TOKENS.WETH,
+        FUSE_TOKENS.WFUSE,
+        FUSE_TOKENS.WBTC,
+        FUSE_TOKENS.VOLT,
     ],
     [ChainId.Ganache]: [],
 };

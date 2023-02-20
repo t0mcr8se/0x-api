@@ -1761,10 +1761,10 @@
   resolved "https://registry.yarnpkg.com/@t0mcr8se/0x-contract-addresses/-/0x-contract-addresses-6.25.1.tgz#b4031be87fedc1627c27a81534a540008cb2f66c"
   integrity sha512-ezvaZpMOQk85i4OzeA0E5oSlBQKvdikWIe7hThjf33su/VxzI+vXMFT02p7KhLEfr4UqK3+e3G5dz9l/Z2J4BQ==
 
-"@t0mcr8se/0x-contract-addresses@^8.0.0":
-  version "8.0.0"
-  resolved "https://registry.yarnpkg.com/@t0mcr8se/0x-contract-addresses/-/0x-contract-addresses-8.0.0.tgz#cffb9f5e344eb252ba8953ade846456464bfe741"
-  integrity sha512-z7XVCLSxuLJz1VAhsXGfj7aH8esWpL0DF5xFSMOBhdIbV6WA4gQLsmZBdFnkf7zJ5E74hgdth37RnYfV1KTVkg==
+"@t0mcr8se/0x-contract-addresses@^8.0.1":
+  version "8.0.1"
+  resolved "https://registry.yarnpkg.com/@t0mcr8se/0x-contract-addresses/-/0x-contract-addresses-8.0.1.tgz#e9bd3519cbf5322c90b12c9fd86cb7fbdd4b0219"
+  integrity sha512-eRQR7HHblM0C2LPTEtaKhy70IsubZJPCzg+JELLJbYjskJp0zMvFG0iJmspuPvZe9FPTGBHtyNPAm6g+K2wmzw==
 
 "@t0mcr8se/0x-token-metadata@^0.2.4":
   version "0.2.4"
