@@ -49,7 +49,7 @@ export const ETH_DECIMALS = 18;
 
 // RFQ Quote Validator expiration threshold
 export const RFQ_FIRM_QUOTE_CACHE_EXPIRY = ONE_MINUTE_MS * 2;
-export const RFQ_ALLOWANCE_TARGET = '0xdef1c0ded9bec7f1a1670819833240f027b25eff';
+export const RFQ_ALLOWANCE_TARGET = '0xeca6055ac01e717cef70b8c6fc5f9ca32cb4118a';
 export const RFQM_MINIMUM_EXPIRY_DURATION_MS = ONE_MINUTE_MS;
 export const RFQM_TX_GAS_ESTIMATE = 165e3;
 export const RFQ_DYNAMIC_BLACKLIST_TTL = ONE_SECOND_MS * 30;

@@ -707,6 +707,8 @@ const FUSE_TOKENS = {
     WBTC: '0x33284f95ccb7b948d9d352e1439561cf83d8d00d',
     WBNB: '0x6acb34b1df86e254b544189ec32cf737e2482058',
     VOLT: '0x34ef2cc892a88415e9f02b91bfa9c91fc0be6bd4',
+    FUSD: '0x249be57637d8b013ad64785404b24aebae9b098b',
+    FUSD2: '0xd0ce1b4a349c35e61af02f5971e71ac502441e49',
 }
 
 export const REBASING_TOKENS = new Set<string>([MAINNET_TOKENS.stETH]);

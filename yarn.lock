@@ -1756,22 +1756,22 @@
   dependencies:
     defer-to-connect "^1.0.1"
 
-"@t0mcr8se/0x-contract-addresses@^6.25.1":
-  version "6.25.1"
-  resolved "https://registry.yarnpkg.com/@t0mcr8se/0x-contract-addresses/-/0x-contract-addresses-6.25.1.tgz#b4031be87fedc1627c27a81534a540008cb2f66c"
-  integrity sha512-ezvaZpMOQk85i4OzeA0E5oSlBQKvdikWIe7hThjf33su/VxzI+vXMFT02p7KhLEfr4UqK3+e3G5dz9l/Z2J4BQ==
+"@t0mcr8se/0x-contract-addresses@^6.26.0":
+  version "6.26.0"
+  resolved "https://registry.yarnpkg.com/@t0mcr8se/0x-contract-addresses/-/0x-contract-addresses-6.26.0.tgz#84bac1c1e402534dea46ce7e697a54a17f009975"
+  integrity sha512-nc312J/9dz8exZ5SFME7ekaLfJzN1zwBnXJcYq4MCU72CuaM89eBJMCNQvJfmTHsNMqH1zB+8Rt56UaX+BpB/A==
 
-"@t0mcr8se/0x-contract-addresses@^8.0.1":
-  version "8.0.1"
-  resolved "https://registry.yarnpkg.com/@t0mcr8se/0x-contract-addresses/-/0x-contract-addresses-8.0.1.tgz#e9bd3519cbf5322c90b12c9fd86cb7fbdd4b0219"
-  integrity sha512-eRQR7HHblM0C2LPTEtaKhy70IsubZJPCzg+JELLJbYjskJp0zMvFG0iJmspuPvZe9FPTGBHtyNPAm6g+K2wmzw==
+"@t0mcr8se/0x-contract-addresses@^8.1.0":
+  version "8.1.0"
+  resolved "https://registry.yarnpkg.com/@t0mcr8se/0x-contract-addresses/-/0x-contract-addresses-8.1.0.tgz#05c49b5e9190769a2c098b2ef8f75e514aec7ccf"
+  integrity sha512-UQN4bpoWI6wN3YW0nCvTuTfOeNoCr8xHqLnSD+erDjZaBUBvAvtbgwmXne7ZMMEUPG1Q6RWRHyl/XIWYcjawIA==
 
-"@t0mcr8se/0x-token-metadata@^0.2.4":
-  version "0.2.4"
-  resolved "https://registry.yarnpkg.com/@t0mcr8se/0x-token-metadata/-/0x-token-metadata-0.2.4.tgz#828221dbb5b48f13d2fe212110d7ca2fcd43f488"
-  integrity sha512-aw659nbVsjZamz10LebCDoq3dFRisvIzvFBlhjoHqL6FBw4sL8Xo+yGnZDfSlXXbM0dIyEmwTgwNZ0aFrKlvgg==
+"@t0mcr8se/0x-token-metadata@^0.2.5":
+  version "0.2.5"
+  resolved "https://registry.yarnpkg.com/@t0mcr8se/0x-token-metadata/-/0x-token-metadata-0.2.5.tgz#6946002428e966bbdd1f639a76c71ec42ee7a06f"
+  integrity sha512-HeEBdp3kGe6i31hKxdWlj0tK9Oqh+e/Y868aRNM+4MhMU57eBVgaRy0hyuemU89SR8BcgL2mcZ7slZohUFiwEQ==
   dependencies:
-    "@t0mcr8se/0x-contract-addresses" "^6.25.1"
+    "@t0mcr8se/0x-contract-addresses" "^6.26.0"
     typescript "^4.2.4"
 
 "@trufflesuite/bigint-buffer@1.1.10":
