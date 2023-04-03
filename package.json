@@ -113,7 +113,7 @@
         "@0x/protocol-utils": "^11.17.2",
         "@0x/quote-server": "^8.0.0",
         "@0x/subproviders": "^7.0.0",
-        "@t0mcr8se/0x-token-metadata": "^0.2.5",
+        "@t0mcr8se/0x-token-metadata": "^0.2.6",
         "@0x/types": "^3.3.6",
         "@0x/utils": "^7.0.0",
         "@0x/web3-wrapper": "^8.0.0",
