@@ -1726,6 +1726,7 @@ export class SamplerOperations {
                         }
                         return this.getMakerPsmSellQuotes(psmInfo, makerToken, takerToken, takerFillAmounts);
                     }
+                    case ERC20BridgeSource.VoltageV3:
                     case ERC20BridgeSource.UniswapV3: {
                         // Rebasing tokens lead to a high revert rate.
                         if (REBASING_TOKENS.has(takerToken) || REBASING_TOKENS.has(makerToken)) {
@@ -2072,6 +2073,7 @@ export class SamplerOperations {
                         }
                         return this.getMakerPsmBuyQuotes(psmInfo, makerToken, takerToken, makerFillAmounts);
                     }
+                    case ERC20BridgeSource.VoltageV3:
                     case ERC20BridgeSource.UniswapV3: {
                         // Rebasing tokens lead to a high revert rate.
                         if (REBASING_TOKENS.has(takerToken) || REBASING_TOKENS.has(makerToken)) {

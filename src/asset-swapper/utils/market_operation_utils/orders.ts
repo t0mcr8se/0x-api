@@ -141,6 +141,8 @@ export function getErc20BridgeSourceToBridgeSource(source: ERC20BridgeSource): s
             return encodeBridgeSourceId(BridgeProtocol.UniswapV2, 'ApeSwap');
         case ERC20BridgeSource.UniswapV3:
             return encodeBridgeSourceId(BridgeProtocol.UniswapV3, 'UniswapV3');
+        case ERC20BridgeSource.VoltageV3:
+            return encodeBridgeSourceId(BridgeProtocol.UniswapV3, 'UniswapV3')
         case ERC20BridgeSource.KyberDmm:
             return encodeBridgeSourceId(BridgeProtocol.KyberDmm, 'KyberDmm');
         case ERC20BridgeSource.QuickSwap:
@@ -531,6 +533,10 @@ const BRIDGE_ENCODERS: {
     [ERC20BridgeSource.UniswapV3]: AbiEncoder.create([
         { name: 'router', type: 'address' },
         { name: 'path', type: 'bytes' },
+    ]),
+    [ERC20BridgeSource.VoltageV3]: AbiEncoder.create([
+        { name: 'router', type: 'address' },
+        { name: 'path', type: 'bytes' }
     ]),
     [ERC20BridgeSource.KyberDmm]: AbiEncoder.create('(address,address[],address[])'),
     [ERC20BridgeSource.Lido]: AbiEncoder.create('(address,address)'),

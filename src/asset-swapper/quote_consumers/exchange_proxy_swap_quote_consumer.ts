@@ -364,6 +364,7 @@ export class ExchangeProxySwapQuoteConsumer implements SwapQuoteConsumer {
                         }),
                     });
                     break switch_statement;
+                case ERC20BridgeSource.VoltageV3:
                 case ERC20BridgeSource.UniswapV3: {
                     const fillData = (order as OptimizedMarketBridgeOrder<FinalUniswapV3FillData>).fillData;
                     subcalls.push({

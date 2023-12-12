@@ -217,6 +217,7 @@ export const SELL_SOURCE_FILTER_BY_CHAIN_ID: Record<ChainId, SourceFilters> = {
         ERC20BridgeSource.FStable,
         ERC20BridgeSource.VoltStableSwap,
         ERC20BridgeSource.MultiHop,
+        ERC20BridgeSource.VoltageV3,
     ]),
 };
 
@@ -373,6 +374,7 @@ export const BUY_SOURCE_FILTER_BY_CHAIN_ID: Record<ChainId, SourceFilters> = {
         // ERC20BridgeSource.FuseSwap,
         ERC20BridgeSource.FStable,
         ERC20BridgeSource.VoltStableSwap,
+        ERC20BridgeSource.VoltageV3,
         ERC20BridgeSource.MultiHop,
     ]),
 };
@@ -403,7 +405,7 @@ export const FEE_QUOTE_SOURCES_BY_CHAIN_ID = valueByChainId<ERC20BridgeSource[]>
         [ChainId.Celo]: [ERC20BridgeSource.UbeSwap, ERC20BridgeSource.SushiSwap],
         [ChainId.Optimism]: [ERC20BridgeSource.UniswapV3],
         [ChainId.Arbitrum]: [ERC20BridgeSource.UniswapV3, ERC20BridgeSource.SushiSwap],
-        [ChainId.Fuse]: [ERC20BridgeSource.VoltDex],
+        [ChainId.Fuse]: [ERC20BridgeSource.VoltDex, ERC20BridgeSource.VoltageV3],
     },
     [],
 );
@@ -2448,6 +2450,10 @@ export const UNISWAPV3_CONFIG_BY_CHAIN_ID = valueByChainId(
             quoter: '0x61ffe014ba17989e743c5f6cb21bf9697530b21e',
             router: '0xe592427a0aece92de3edee1f18e0157c05861564',
         },
+        [ChainId.Fuse]: {
+            quoter: '0xbd113a563ec237e5cf91c843cf27face6eab2c73',
+            router: '0x23e19cdfc38e40b902c05c709448e22a281a3243'
+        }
     },
     { quoter: NULL_ADDRESS, router: NULL_ADDRESS },
 );
@@ -2809,6 +2815,37 @@ export const DEFAULT_GAS_SCHEDULE: GasSchedule = {
         if (path.length > 2) {
             gas += (path.length - 2) * 65e3; // +65k for each hop.
         }
+        return gas;
+    },
+    [ERC20BridgeSource.VoltageV3]: (fillData?: FillData) => {
+        const uniFillData = fillData as UniswapV3FillData | FinalUniswapV3FillData;
+        // NOTE: This base value was heuristically chosen by looking at how much it generally
+        // underestimated gas usage
+        const base = 34e3; // 34k base
+        let gas = base;
+        if (isFinalUniswapV3FillData(uniFillData)) {
+            gas += uniFillData.gasUsed;
+        } else {
+            // NOTE: We don't actually know which of the paths would be used in the router
+            // therefore we estimate using the median of gas usage returned from UniswapV3
+            // For the best case scenario (least amount of hops & ticks) this will
+            // overestimate the gas usage
+            const pathAmountsWithGasUsed = uniFillData.pathAmounts.filter((p) => p.gasUsed > 0);
+            const medianGasUsedForPath =
+                pathAmountsWithGasUsed[Math.floor(pathAmountsWithGasUsed.length / 2)]?.gasUsed ?? 0;
+            gas += medianGasUsedForPath;
+        }
+
+        // If we for some reason could not read `gasUsed` when sampling
+        // fall back to legacy gas estimation
+        if (gas === base) {
+            gas = 100e3;
+            const path = uniFillData.tokenAddressPath;
+            if (path.length > 2) {
+                gas += (path.length - 2) * 32e3; // +32k for each hop.
+            }
+        }
+
         return gas;
     },
     [ERC20BridgeSource.UniswapV3]: (fillData?: FillData) => {
