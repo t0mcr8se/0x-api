@@ -2451,8 +2451,8 @@ export const UNISWAPV3_CONFIG_BY_CHAIN_ID = valueByChainId(
             router: '0xe592427a0aece92de3edee1f18e0157c05861564',
         },
         [ChainId.Fuse]: {
-            quoter: '0x02c432130b96e7eb0b907017b8f331a578fc805b',
-            router: '0x7397632f3bf915f0b83491a213d3525af35bf23a'
+            quoter: '0x50ce1a56688f5f20393524c8312fcb3937f6a447',
+            router: '0x798026aefa5b0c7b57cc49192c19df338f45df80'
         }
     },
     { quoter: NULL_ADDRESS, router: NULL_ADDRESS },
