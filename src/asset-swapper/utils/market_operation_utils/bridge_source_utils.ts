@@ -61,6 +61,7 @@ import {
     YOSHI_ROUTER_BY_CHAIN_ID,
     VOLTAGE_DEX_ROUTER_BY_CHAIN_ID,
     FSTABLE_POOLS_BY_CHAIN_ID,
+    FSTABLEV3_POOLS_BY_CHAIN_ID,
 } from './constants';
 import { CurveInfo, PlatypusInfo } from './types';
 import { ERC20BridgeSource } from '../../types';
@@ -109,6 +110,15 @@ function getFStableForPair(chainId: ChainId, takerToken: string, makerToken: str
         return [];
     }
     return Object.values(FSTABLE_POOLS_BY_CHAIN_ID[chainId])
+        .filter((c) => [makerToken, takerToken].every((t) => c.tokens.includes(t)))
+        .map((i) => i.poolAddress);
+}
+
+function getFStableV3ForPair(chainId: ChainId, takerToken: string, makerToken: string): string[] {
+    if (chainId !== ChainId.Fuse) {
+        return [];
+    }
+    return Object.values(FSTABLEV3_POOLS_BY_CHAIN_ID[chainId])
         .filter((c) => [makerToken, takerToken].every((t) => c.tokens.includes(t)))
         .map((i) => i.poolAddress);
 }
@@ -410,7 +420,7 @@ export function getShellLikeInfosForPair(
     chainId: ChainId,
     takerToken: string,
     makerToken: string,
-    source: ERC20BridgeSource.Shell | ERC20BridgeSource.Component | ERC20BridgeSource.MStable | ERC20BridgeSource.FStable,
+    source: ERC20BridgeSource.Shell | ERC20BridgeSource.Component | ERC20BridgeSource.MStable | ERC20BridgeSource.FStable | ERC20BridgeSource.FStableV3,
 ): string[] {
     switch (source) {
         case ERC20BridgeSource.Shell:
@@ -421,6 +431,8 @@ export function getShellLikeInfosForPair(
             return getMStableForPair(chainId, takerToken, makerToken);
         case ERC20BridgeSource.FStable:
             return getFStableForPair(chainId, takerToken, makerToken);
+        case ERC20BridgeSource.FStableV3:
+            return getFStableV3ForPair(chainId, takerToken, makerToken)
         default:
             throw new Error(`Unknown Shell like source ${source}`);
     }

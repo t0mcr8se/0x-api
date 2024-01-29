@@ -552,7 +552,8 @@ export enum ERC20BridgeSource {
     VoltStableSwap = 'VoltStableSwap',
     VoltDex = 'VoltDex',
     FStable = 'FStable',
-    VoltageV3 = 'VoltageV3'
+    VoltageV3 = 'VoltageV3',
+    FStableV3 = 'FStableV3'
 }
 
 // Internal `fillData` field for `Fill` objects.

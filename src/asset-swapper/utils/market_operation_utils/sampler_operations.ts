@@ -587,6 +587,21 @@ export class SamplerOperations {
         });
     }
 
+    public getFStableV3SellQuotes(
+        router: string,
+        makerToken: string,
+        takerToken: string,
+        takerFillAmounts: BigNumber[],
+    ): SourceQuoteOperation<GenericRouterFillData> {
+        return new SamplerContractOperation({
+            source: ERC20BridgeSource.FStableV3,
+            fillData: { router },
+            contract: this._samplerContract,
+            function: this._samplerContract.sampleSellsFromMStable,
+            params: [router, takerToken, makerToken, takerFillAmounts],
+        });
+    }
+
     public getMStableBuyQuotes(
         router: string,
         makerToken: string,
@@ -610,6 +625,21 @@ export class SamplerOperations {
     ): SourceQuoteOperation<GenericRouterFillData> {
         return new SamplerContractOperation({
             source: ERC20BridgeSource.FStable,
+            fillData: { router },
+            contract: this._samplerContract,
+            function: this._samplerContract.sampleBuysFromMStable,
+            params: [router, takerToken, makerToken, makerFillAmounts],
+        });
+    }
+
+    public getFStableV3BuyQuotes(
+        router: string,
+        makerToken: string,
+        takerToken: string,
+        makerFillAmounts: BigNumber[],
+    ): SourceQuoteOperation<GenericRouterFillData> {
+        return new SamplerContractOperation({
+            source: ERC20BridgeSource.FStableV3,
             fillData: { router },
             contract: this._samplerContract,
             function: this._samplerContract.sampleBuysFromMStable,
@@ -1646,6 +1676,10 @@ export class SamplerOperations {
                         return getShellLikeInfosForPair(this.chainId, takerToken, makerToken, source).map((pool) =>
                             this.getFStableSellQuotes(pool, makerToken, takerToken, takerFillAmounts),
                         );
+                    case ERC20BridgeSource.FStableV3:
+                        return getShellLikeInfosForPair(this.chainId, takerToken, makerToken, source).map((pool) =>
+                            this.getFStableV3SellQuotes(pool, makerToken, takerToken, takerFillAmounts),
+                        );
                     case ERC20BridgeSource.Mooniswap:
                         return [
                             ...MOONISWAP_REGISTRIES_BY_CHAIN_ID[this.chainId]
@@ -1993,6 +2027,10 @@ export class SamplerOperations {
                         return getShellLikeInfosForPair(this.chainId, takerToken, makerToken, source).map((pool) =>
                             this.getFStableBuyQuotes(pool, makerToken, takerToken, makerFillAmounts),
                         );
+                    case ERC20BridgeSource.FStableV3:
+                        return getShellLikeInfosForPair(this.chainId, takerToken, makerToken, source).map((pool) => 
+                            this.getFStableV3BuyQuotes(pool, makerToken, takerToken, makerFillAmounts)
+                        )
                     case ERC20BridgeSource.Mooniswap:
                         return [
                             ...MOONISWAP_REGISTRIES_BY_CHAIN_ID[this.chainId]

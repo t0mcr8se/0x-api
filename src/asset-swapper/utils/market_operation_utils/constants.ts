@@ -213,7 +213,7 @@ export const SELL_SOURCE_FILTER_BY_CHAIN_ID: Record<ChainId, SourceFilters> = {
     ]),
     [ChainId.Fuse]: new SourceFilters([
         ERC20BridgeSource.VoltDex,
-        // ERC20BridgeSource.FuseSwap,
+        ERC20BridgeSource.FStableV3,
         ERC20BridgeSource.FStable,
         ERC20BridgeSource.VoltStableSwap,
         ERC20BridgeSource.MultiHop,
@@ -371,7 +371,7 @@ export const BUY_SOURCE_FILTER_BY_CHAIN_ID: Record<ChainId, SourceFilters> = {
     ]),
     [ChainId.Fuse]: new SourceFilters([
         ERC20BridgeSource.VoltDex,
-        // ERC20BridgeSource.FuseSwap,
+        ERC20BridgeSource.FStableV3,
         ERC20BridgeSource.FStable,
         ERC20BridgeSource.VoltStableSwap,
         ERC20BridgeSource.VoltageV3,
@@ -711,6 +711,8 @@ const FUSE_TOKENS = {
     VOLT: '0x34ef2cc892a88415e9f02b91bfa9c91fc0be6bd4',
     FUSD: '0x249be57637d8b013ad64785404b24aebae9b098b',
     FUSD2: '0xd0ce1b4a349c35e61af02f5971e71ac502441e49',
+    USDC_V2: '0x28c3d1cd466ba22f6cae51b1a4692a831696391a',
+    USDT_V2: '0x68c9736781e9316ebf5c3d49fe0c1f45d2d104cd'
 }
 
 export const REBASING_TOKENS = new Set<string>([MAINNET_TOKENS.stETH]);
@@ -1060,6 +1062,8 @@ export const DEFAULT_INTERMEDIATE_TOKENS_BY_CHAIN_ID: Record<ChainId, string[]> 
         FUSE_TOKENS.WFUSE,
         FUSE_TOKENS.WBTC,
         FUSE_TOKENS.VOLT,
+        FUSE_TOKENS.USDC_V2,
+        FUSE_TOKENS.USDT_V2
     ],
     [ChainId.Ganache]: [],
 };
@@ -2206,6 +2210,22 @@ export const FSTABLE_POOLS_BY_CHAIN_ID = valueByChainId(
     },
 );
 
+export const FSTABLEV3_POOLS_BY_CHAIN_ID = valueByChainId(
+    {
+        [ChainId.Fuse]: {
+            fUSD: {
+                poolAddress: '0xce86a1cf3cff48139598de6bf9b1df2e0f79f86f',
+                tokens: [FUSE_TOKENS.USDC_V2, FUSE_TOKENS.USDT_V2]
+            }
+        }
+    }, {
+        fUSD: {
+            poolAddress: NULL_ADDRESS,
+            tokens: [] as string[]
+        }
+    }
+)
+
 export const KYBER_DMM_ROUTER_BY_CHAIN_ID = valueByChainId<string>(
     {
         [ChainId.Mainnet]: '0x1c87257f5e8609940bc751a07bb085bb7f8cdbe6',
@@ -2779,6 +2799,7 @@ export const DEFAULT_GAS_SCHEDULE: GasSchedule = {
     },
     [ERC20BridgeSource.MStable]: () => 200e3,
     [ERC20BridgeSource.FStable]: () => 200e3,
+    [ERC20BridgeSource.FStableV3]: () => 200e3,
     [ERC20BridgeSource.MakerPsm]: (fillData?: FillData) => {
         const psmFillData = fillData as MakerPsmFillData;
         return psmFillData.takerToken === psmFillData.gemTokenAddress ? 210e3 : 290e3;
