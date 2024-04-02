@@ -47,7 +47,7 @@ import {
     getMaxQuoteSlippageRate,
     getTransformerNonces,
     isDirectSwapCompatible,
-    isFeeTransferTokenCompitable as isFeeTransferTokenFillCompatible,
+    isFeeTransferTokenFillCompatible,
     isMultiplexBatchFillCompatible,
     isMultiplexMultiHopFillCompatible,
     requiresTransformERC20,
@@ -321,8 +321,8 @@ export class ExchangeProxySwapQuoteConsumer implements SwapQuoteConsumer {
                 ethAmount,
                 toAddress: VOLTAGE_DEX_ROUTER_BY_CHAIN_ID[this.chainId],
                 allowanceTarget: VOLTAGE_DEX_ROUTER_BY_CHAIN_ID[this.chainId],
-                gasOverhead: ZERO_AMOUNT
-            }
+                gasOverhead: ZERO_AMOUNT,
+            };
         }
 
         // TODO(kyu-c): move the rest of the feature calldata generation logic to the rule/registry.
@@ -505,14 +505,19 @@ export class ExchangeProxySwapQuoteConsumer implements SwapQuoteConsumer {
         }
     }
 
-    private encodeUniswapV2FillCalldata(quote: SwapQuote, opts: ExchangeProxyContractOpts & { takerAddress?: string }): string {
-        const encoder = AbiEncoder.createMethod('swapExactTokensForTokensSupportingFeeOnTransferTokens', [
+    private encodeUniswapV2FillCalldata(
+        quote: SwapQuote,
+        opts: ExchangeProxyContractOpts & { takerAddress?: string },
+    ): string {
+        const method = opts.isToETH ? 'swapExactTokensForETHSupportingFeeOnTransferTokens' : 'swapExactTokensForTokensSupportingFeeOnTransferTokens'
+
+        const encoder = AbiEncoder.createMethod(method, [
             { type: 'uint', name: 'amountIn' },
             { type: 'uint', name: 'amountOutMin' },
             { type: 'address[]', name: 'path' },
             { type: 'address', name: 'to' },
             { type: 'uint', name: 'deadline' },
-        ])
+        ]);
 
         const sellAmount = BigNumber.max(
             quote.bestCaseQuoteInfo.totalTakerAmount,
@@ -521,16 +526,18 @@ export class ExchangeProxySwapQuoteConsumer implements SwapQuoteConsumer {
 
         const maxSlippage = getMaxQuoteSlippageRate(quote);
 
-        const slippedOrder = quote.path.getSlippedOrders(maxSlippage)[0] as OptimizedMarketBridgeOrder<UniswapV2FillData>
+        const slippedOrder = quote.path.getSlippedOrders(maxSlippage)[0] as OptimizedMarketBridgeOrder<
+            UniswapV2FillData
+        >;
 
-        const { fillData } = slippedOrder
+        const { fillData } = slippedOrder;
 
         return encoder.encode({
             amountIn: sellAmount,
             amountOutMin: quote.worstCaseQuoteInfo.makerAmount,
             path: fillData.tokenAddressPath,
             to: opts.takerAddress,
-            deadline: Math.floor(Date.now() / 1000) + 300
-        })
+            deadline: Math.floor(Date.now() / 1000) + 300,
+        });
     }
 }

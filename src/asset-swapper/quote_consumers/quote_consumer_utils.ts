@@ -119,7 +119,7 @@ export function isDirectSwapCompatible(
     return true;
 }
 
-export function isFeeTransferTokenCompitable(quote: SwapQuote): boolean {
+export function isFeeTransferTokenFillCompatible(quote: SwapQuote): boolean {
     const order = quote.path.getOrders()[0]
     return FEE_TRANSFER_TOKENS.includes(quote.takerToken) && order.source === 'VoltDex'
 }
