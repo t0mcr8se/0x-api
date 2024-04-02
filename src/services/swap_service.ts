@@ -364,7 +364,7 @@ export class SwapService implements ISwapService {
         } = serviceUtils.getAffiliateFeeAmounts(swapQuote, affiliateFee);
 
         // Grab the encoded version of the swap quote
-        const { to, value, data, decodedUniqueId, gasOverhead } = this.getSwapQuotePartialTransaction(
+        const { to, value, data, decodedUniqueId, gasOverhead, allowanceTarget: quoteAllowanceTarget } = this.getSwapQuotePartialTransaction(
             swapQuote,
             isETHSell,
             isETHBuy,
@@ -377,58 +377,14 @@ export class SwapService implements ISwapService {
                 buyTokenFeeAmount,
                 sellTokenFeeAmount,
             },
+            takerAddress
         );
 
-        let conservativeBestCaseGasEstimate = new BigNumber(worstCaseGas).plus(affiliateFeeGasCost);
+        const conservativeBestCaseGasEstimate = new BigNumber(worstCaseGas).plus(affiliateFeeGasCost);
 
         // Cannot eth_gasEstimate for /price when RFQ Native liquidity is included
-        const isNativeIncluded = swapQuote.sourceBreakdown.singleSource.Native !== undefined;
         const isQuote = endpoint === 'quote';
-        const canEstimateGas = isQuote || !isNativeIncluded;
 
-        // If the taker address is provided we can provide a more accurate gas estimate
-        // using eth_gasEstimate
-        // If an error occurs we attempt to provide a better message then "Transaction Reverted"
-        if (takerAddress && !skipValidation && canEstimateGas) {
-            try {
-                // Record the faux gas estimate
-                const fauxGasEstimate = conservativeBestCaseGasEstimate;
-                let estimateGasCallResult = await this._estimateGasOrThrowRevertErrorAsync({
-                    to,
-                    data,
-                    from: takerAddress,
-                    value,
-                    gasPrice,
-                });
-                // Add any underterministic gas overhead the encoded transaction has detected
-                estimateGasCallResult = estimateGasCallResult.plus(gasOverhead);
-                // Add a little buffer to eth_estimateGas as it is not always correct
-                const realGasEstimate = estimateGasCallResult.times(GAS_LIMIT_BUFFER_MULTIPLIER).integerValue();
-                // Take the max of the faux estimate or the real estimate
-                conservativeBestCaseGasEstimate = BigNumber.max(fauxGasEstimate, realGasEstimate);
-                logger.info(
-                    {
-                        fauxGasEstimate,
-                        realGasEstimate,
-                        delta: realGasEstimate.minus(fauxGasEstimate),
-                        accuracy: realGasEstimate.minus(fauxGasEstimate).dividedBy(realGasEstimate).toFixed(4),
-                        buyToken,
-                        sellToken,
-                        sources: _.uniq(swapQuote.path.getOrders().map((o) => o.source)),
-                    },
-                    'Improved gas estimate',
-                );
-            } catch (error) {
-                if (isQuote) {
-                    // On /quote, when skipValidation=false, we want to raise an error
-                    throw error;
-                }
-                logger.warn(
-                    { takerAddress, data, value, gasPrice, error: error?.message },
-                    'Unable to use eth_estimateGas. Falling back to faux estimate',
-                );
-            }
-        }
         const worstCaseGasEstimate = conservativeBestCaseGasEstimate;
         const { makerTokenDecimals, takerTokenDecimals } = swapQuote;
         const { price, guaranteedPrice } = SwapService._getSwapQuotePrice(
@@ -444,7 +400,7 @@ export class SwapService implements ISwapService {
         adjustedValue = isETHSell ? protocolFee.plus(swapQuote.worstCaseQuoteInfo.takerAmount) : protocolFee;
 
         // No allowance target is needed if this is an ETH sell, so set to 0x000..
-        const allowanceTarget = isETHSell ? NULL_ADDRESS : this._contractAddresses.exchangeProxy;
+        const allowanceTarget = isETHSell ? NULL_ADDRESS : quoteAllowanceTarget ? quoteAllowanceTarget : this._contractAddresses.exchangeProxy;
 
         const { takerAmountPerEth: takerTokenToEthRate, makerAmountPerEth: makerTokenToEthRate } = swapQuote;
 
@@ -702,13 +658,15 @@ export class SwapService implements ISwapService {
         shouldSellEntireBalance: boolean,
         affiliateAddress: string | undefined,
         affiliateFee: AffiliateFeeAmount,
-    ): SwapQuoteResponsePartialTransaction & { gasOverhead: BigNumber } {
-        const opts: Partial<ExchangeProxyContractOpts> = {
+        takerAddress: string | undefined
+    ): SwapQuoteResponsePartialTransaction & { allowanceTarget: string, gasOverhead: BigNumber } {
+        const opts: Partial<ExchangeProxyContractOpts & { takerAddress: string | undefined }> = {
             isFromETH,
             isToETH,
             isMetaTransaction,
             shouldSellEntireBalance,
             affiliateFee,
+            takerAddress
         };
 
         const {
@@ -716,6 +674,7 @@ export class SwapService implements ISwapService {
             ethAmount: value,
             toAddress: to,
             gasOverhead,
+            allowanceTarget
         } = this._swapQuoteConsumer.getCalldataOrThrow(swapQuote, opts);
 
         const { affiliatedData, decodedUniqueId } = serviceUtils.attributeCallData(data, affiliateAddress);
@@ -725,6 +684,7 @@ export class SwapService implements ISwapService {
             data: affiliatedData,
             decodedUniqueId,
             gasOverhead,
+            allowanceTarget
         };
     }
 
