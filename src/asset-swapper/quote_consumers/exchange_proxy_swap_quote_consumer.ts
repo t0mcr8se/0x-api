@@ -8,7 +8,7 @@ import {
     FillQuoteTransformerOrderType,
     FillQuoteTransformerSide,
 } from '@0x/protocol-utils';
-import { BigNumber } from '@0x/utils';
+import { AbiEncoder, BigNumber } from '@0x/utils';
 
 import { constants } from '../constants';
 import {
@@ -23,6 +23,7 @@ import { assert } from '../utils/utils';
 import {
     CURVE_LIQUIDITY_PROVIDER_BY_CHAIN_ID,
     NATIVE_FEE_TOKEN_BY_CHAIN_ID,
+    VOLTAGE_DEX_ROUTER_BY_CHAIN_ID,
 } from '../utils/market_operation_utils/constants';
 import { CurveFillData, FinalUniswapV3FillData, UniswapV2FillData } from '../utils/market_operation_utils/types';
 
@@ -46,6 +47,7 @@ import {
     getMaxQuoteSlippageRate,
     getTransformerNonces,
     isDirectSwapCompatible,
+    isFeeTransferTokenCompitable as isFeeTransferTokenFillCompatible,
     isMultiplexBatchFillCompatible,
     isMultiplexMultiHopFillCompatible,
     requiresTransformERC20,
@@ -84,9 +86,9 @@ export class ExchangeProxySwapQuoteConsumer implements SwapQuoteConsumer {
 
     public getCalldataOrThrow(
         quote: MarketBuySwapQuote | MarketSellSwapQuote,
-        opts: Partial<ExchangeProxyContractOpts> = {},
+        opts: Partial<ExchangeProxyContractOpts & { takerAddress?: string }> = {},
     ): CalldataInfo {
-        const optsWithDefaults: ExchangeProxyContractOpts = {
+        const optsWithDefaults: ExchangeProxyContractOpts & { takerAddress?: string } = {
             ...constants.DEFAULT_EXCHANGE_PROXY_EXTENSION_CONTRACT_OPTS,
             ...opts,
         };
@@ -313,6 +315,16 @@ export class ExchangeProxySwapQuoteConsumer implements SwapQuoteConsumer {
             };
         }
 
+        if (isFeeTransferTokenFillCompatible(quote)) {
+            return {
+                calldataHexString: this.encodeUniswapV2FillCalldata(quote, optsWithDefaults),
+                ethAmount,
+                toAddress: VOLTAGE_DEX_ROUTER_BY_CHAIN_ID[this.chainId],
+                allowanceTarget: VOLTAGE_DEX_ROUTER_BY_CHAIN_ID[this.chainId],
+                gasOverhead: ZERO_AMOUNT
+            }
+        }
+
         // TODO(kyu-c): move the rest of the feature calldata generation logic to the rule/registry.
 
         return this.featureRuleRegistry.getTransformErc20Rule().createCalldata(quote, optsWithDefaults);
@@ -491,5 +503,34 @@ export class ExchangeProxySwapQuoteConsumer implements SwapQuoteConsumer {
                 )
                 .getABIEncodedTransactionData();
         }
+    }
+
+    private encodeUniswapV2FillCalldata(quote: SwapQuote, opts: ExchangeProxyContractOpts & { takerAddress?: string }): string {
+        const encoder = AbiEncoder.createMethod('swapExactTokensForTokensSupportingFeeOnTransferTokens', [
+            { type: 'uint', name: 'amountIn' },
+            { type: 'uint', name: 'amountOutMin' },
+            { type: 'address[]', name: 'path' },
+            { type: 'address', name: 'to' },
+            { type: 'uint', name: 'deadline' },
+        ])
+
+        const sellAmount = BigNumber.max(
+            quote.bestCaseQuoteInfo.totalTakerAmount,
+            quote.worstCaseQuoteInfo.totalTakerAmount,
+        );
+
+        const maxSlippage = getMaxQuoteSlippageRate(quote);
+
+        const slippedOrder = quote.path.getSlippedOrders(maxSlippage)[0] as OptimizedMarketBridgeOrder<UniswapV2FillData>
+
+        const { fillData } = slippedOrder
+
+        return encoder.encode({
+            amountIn: sellAmount,
+            amountOutMin: quote.worstCaseQuoteInfo.makerAmount,
+            path: fillData.tokenAddressPath,
+            to: opts.takerAddress,
+            deadline: Math.floor(Date.now() / 1000) + 300
+        })
     }
 }

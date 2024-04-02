@@ -20,6 +20,7 @@ import {
     getErc20BridgeSourceToBridgeSource,
 } from '../utils/market_operation_utils/orders';
 import { TransformerNonces } from './types';
+import { FEE_TRANSFER_TOKENS } from '../utils/market_operation_utils/constants';
 
 const MULTIPLEX_BATCH_FILL_SOURCES = [
     ERC20BridgeSource.UniswapV2,
@@ -116,6 +117,11 @@ export function isDirectSwapCompatible(
         return false;
     }
     return true;
+}
+
+export function isFeeTransferTokenCompitable(quote: SwapQuote): boolean {
+    const order = quote.path.getOrders()[0]
+    return FEE_TRANSFER_TOKENS.includes(quote.takerToken) && order.source === 'VoltDex'
 }
 
 export function getMaxQuoteSlippageRate(quote: SwapQuote): number {
