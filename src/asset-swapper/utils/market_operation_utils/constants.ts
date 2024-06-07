@@ -717,7 +717,9 @@ const FUSE_TOKENS = {
     USDT_V2: '0x68c9736781e9316ebf5c3d49fe0c1f45d2d104cd',
     LADY_BOT: '0xde4b9879b56187d13b2c41da24c72ff100a5ac9a',
     FOO: '0x74616164eb1892cec5fa553d45b3e5d6df7bc7b9',
-    FVKSRG: '0xa28a758619ba32b11f8d55eb6c0e1c7e5929bf61'
+    FVKSRG: '0xa28a758619ba32b11f8d55eb6c0e1c7e5929bf61',
+    BNB_V2: '0x117c0419352ddb6fe575a67faa70315bdc4a93f3',
+    FUSD3: '0xce86a1cf3cff48139598de6bf9b1df2e0f79f86f'
 }
 
 export const REBASING_TOKENS = new Set<string>([MAINNET_TOKENS.stETH]);
@@ -1070,7 +1072,9 @@ export const DEFAULT_INTERMEDIATE_TOKENS_BY_CHAIN_ID: Record<ChainId, string[]> 
         FUSE_TOKENS.WBTC,
         FUSE_TOKENS.VOLT,
         FUSE_TOKENS.USDC_V2,
-        FUSE_TOKENS.USDT_V2
+        FUSE_TOKENS.USDT_V2,
+        FUSE_TOKENS.FUSD3,
+        FUSE_TOKENS.BNB_V2
     ],
     [ChainId.Ganache]: [],
 };
