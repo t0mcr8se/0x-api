@@ -719,7 +719,10 @@ const FUSE_TOKENS = {
     FOO: '0x74616164eb1892cec5fa553d45b3e5d6df7bc7b9',
     FVKSRG: '0xa28a758619ba32b11f8d55eb6c0e1c7e5929bf61',
     BNB_V2: '0x117c0419352ddb6fe575a67faa70315bdc4a93f3',
-    FUSD3: '0xce86a1cf3cff48139598de6bf9b1df2e0f79f86f'
+    FUSD3: '0xce86a1cf3cff48139598de6bf9b1df2e0f79f86f',
+    DAI: '0x2502f488d481df4f5054330c71b95d93d41625c2',
+    STETH: '0x587983b895db50ddabc0aac8adc592b29bb30d80',
+    MKR: '0x303cc3f27034c4e3933dab8e601178ed3d2a1e3c'
 }
 
 export const REBASING_TOKENS = new Set<string>([MAINNET_TOKENS.stETH]);
