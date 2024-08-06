@@ -1082,7 +1082,10 @@ export const DEFAULT_INTERMEDIATE_TOKENS_BY_CHAIN_ID: Record<ChainId, string[]> 
         FUSE_TOKENS.BNB_V2,
         FUSE_TOKENS.DAI,
         FUSE_TOKENS.MKR,
-        FUSE_TOKENS.STETH
+        FUSE_TOKENS.STETH,
+        FUSE_TOKENS.WETH_V2,
+        FUSE_TOKENS.AEETH,
+        FUSE_TOKENS.ASSOL
     ],
     [ChainId.Ganache]: [],
 };
