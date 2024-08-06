@@ -722,7 +722,9 @@ const FUSE_TOKENS = {
     FUSD3: '0xce86a1cf3cff48139598de6bf9b1df2e0f79f86f',
     DAI: '0x2502f488d481df4f5054330c71b95d93d41625c2',
     STETH: '0x587983b895db50ddabc0aac8adc592b29bb30d80',
-    MKR: '0x303cc3f27034c4e3933dab8e601178ed3d2a1e3c'
+    MKR: '0x303cc3f27034c4e3933dab8e601178ed3d2a1e3c',
+    AEETH: '0xcc9d144a8a8a1e71d5ec66a13f301b9e0137e71c',
+    ASSOL: '0x5cb5249d420639619ffd637c79f0aa5c0a9fcd4b'
 }
 
 export const REBASING_TOKENS = new Set<string>([MAINNET_TOKENS.stETH]);
@@ -1080,7 +1082,10 @@ export const DEFAULT_INTERMEDIATE_TOKENS_BY_CHAIN_ID: Record<ChainId, string[]> 
         FUSE_TOKENS.BNB_V2,
         FUSE_TOKENS.DAI,
         FUSE_TOKENS.MKR,
-        FUSE_TOKENS.STETH
+        FUSE_TOKENS.STETH,
+        FUSE_TOKENS.WETH_V2,
+        FUSE_TOKENS.AEETH,
+        FUSE_TOKENS.ASSOL
     ],
     [ChainId.Ganache]: [],
 };
