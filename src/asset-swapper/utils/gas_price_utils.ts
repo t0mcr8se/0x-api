@@ -77,11 +77,15 @@ export class GasPriceUtils {
 
     private async _updateGasPriceFromOracleOrThrow(): Promise<void> {
         try {
-            const res = await fetch(this._zeroExGasApiUrl);
-            const gasInfo: GasInfoResponse = await res.json();
+            // const res = await fetch(this._zeroExGasApiUrl);
+            // const gasInfo: GasInfoResponse = await res.json();
             // Reset the error count to 0 once we have a successful response
             this._errorCount = 0;
-            this._gasPriceEstimation = gasInfo.result;
+            const gasPrices: GasPrices = {
+                fast: 27700000000, // 27.7 Gwei in wei (from blockscout)
+                l1CalldataPricePerUnit: 27700000000, 
+            };
+            this._gasPriceEstimation = gasPrices;
         } catch (e) {
             this._errorCount++;
             // If we've reached our max error count then throw
