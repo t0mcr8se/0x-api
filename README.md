@@ -89,7 +89,7 @@ To get a local development version of `0x-api` running:
 | `KAFKA_BROKERS`                        | Optional. No default.                                           | A comma separated list of Kafka broker servers                                                                                                                                    |
 | `KAFKA_TOPIC_QUOTE_REPORT`             | Optional. No default                                            | The name of the Kafka topic to publish quote reports on. Setting this and `KAFKA_BROKERS` enable publishing.                                                                      |
 
-3. Make sure to checkout to this branch
+3. Make sure to checkout to this branch.
 
 4. Install the dependencies:
 
