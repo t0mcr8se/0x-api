@@ -4,7 +4,7 @@
 [![Twitter](https://img.shields.io/badge/follow-twitter-brightgreen)](https://twitter.com/0xProject)
 [![Continuous Integration](https://github.com/0xProject/0x-api/workflows/Build%20and%20Test/badge.svg)](https://github.com/0xProject/0x-api/actions?query=workflow%3A%22Build+and+Test%22+branch%3Amaster)
 
-![alt text](https://raw.githubusercontent.com/0xProject/0x-api/master/0x-api.png '0x API')
+![alt text](https://raw.githubusercontent.com/0xProject/0x-api/master/0x-api.png "0x API")
 
 ## Table of contents
 
@@ -89,27 +89,21 @@ To get a local development version of `0x-api` running:
 | `KAFKA_BROKERS`                        | Optional. No default.                                           | A comma separated list of Kafka broker servers                                                                                                                                    |
 | `KAFKA_TOPIC_QUOTE_REPORT`             | Optional. No default                                            | The name of the Kafka topic to publish quote reports on. Setting this and `KAFKA_BROKERS` enable publishing.                                                                      |
 
-3. Install the dependencies:
+3. Make sure to checkout to this '0x-volt' branch.
+
+4. Install the dependencies:
 
     ```sh
     yarn
     ```
 
-4. Build the project:
+5. Build the project:
 
     ```sh
     yarn build
     ```
 
-5. Run `docker-compose up` to run the other dependencies required for the API. This uses the local `docker-compose.yml` file.
-
-6. Run the database migrations:
-
-```
-yarn db:migrate
-```
-
-7. Start the API
+6. Start the API
 
     ```sh
     yarn start
