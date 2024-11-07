@@ -1,7 +1,8 @@
 import * as heartbeats from 'heartbeats';
+import axios from 'axios';
 
 import { constants } from '../constants';
-import { SwapQuoterError } from '../types';
+
 
 const MAX_ERROR_COUNT = 5;
 
@@ -12,6 +13,14 @@ interface GasPrices {
 }
 interface GasInfoResponse {
     result: GasPrices;
+}
+
+interface FuseExplorerResponse {
+    gas_prices: {
+        average: number;
+        fast: number;
+        slow: number;
+    };
 }
 
 export class GasPriceUtils {
@@ -77,22 +86,58 @@ export class GasPriceUtils {
 
     private async _updateGasPriceFromOracleOrThrow(): Promise<void> {
         try {
-            // const res = await fetch(this._zeroExGasApiUrl);
-            // const gasInfo: GasInfoResponse = await res.json();
-            // Reset the error count to 0 once we have a successful response
-            this._errorCount = 0;
-            const gasPrices: GasPrices = {
-                fast: 27700000000, // 27.7 Gwei in wei (from blockscout)
-                l1CalldataPricePerUnit: 27700000000, 
-            };
-            this._gasPriceEstimation = gasPrices;
-        } catch (e) {
-            this._errorCount++;
-            // If we've reached our max error count then throw
-            if (this._errorCount > MAX_ERROR_COUNT || this._gasPriceEstimation === undefined) {
-                this._errorCount = 0;
-                throw new Error(SwapQuoterError.NoGasPriceProvidedOrEstimated);
+            await this._fetchGasPriceFromFuseExplorer();
+        } catch (explorerError) {
+            console.error('Fuse Explorer failed:', explorerError.message);
+            try {
+                await this._fetchGasPriceFromRpc();
+            } catch (rpcError) {
+                console.error('RPC fallback failed:', rpcError.message);
+                this._handleGasPriceError(rpcError);
             }
+        }
+    }
+
+    private async _fetchGasPriceFromFuseExplorer(): Promise<void> {
+        const explorerApiKey = process.env.FUSE_EXPLORER_API_KEY;
+        const url = explorerApiKey
+            ? `https://explorer.fuse.io/api/v2/stats?apikey=${explorerApiKey}`
+            : 'https://explorer.fuse.io/api/v2/stats';
+        const response = await axios.get(url);
+        const stats: FuseExplorerResponse = response.data;
+        this._setGasPrice(stats.gas_prices.fast);
+
+    }
+
+    private async _fetchGasPriceFromRpc(): Promise<void> {
+        const rpcApiKey = process.env.NODE_RPC_API_KEY;
+        const response = await axios.post(`https://node.rpc.fuse.io/v1/${rpcApiKey}`, {
+            jsonrpc: '2.0',
+            method: 'eth_gasPrice',
+            params: [],
+            id: 1,
+        });
+        const rpcData = response.data;
+        if (rpcData.error) {
+            throw new Error(`RPC Error: ${rpcData.error.message}`);
+        }
+        const gasPriceInWei = parseInt(rpcData.result, 16);
+        this._setGasPrice(gasPriceInWei);
+    }
+
+    private _setGasPrice(gasPriceInWei: number): void {
+        this._gasPriceEstimation = {
+            fast: gasPriceInWei,
+            l1CalldataPricePerUnit: gasPriceInWei,
+        };
+        this._errorCount = 0;
+    }
+
+    private _handleGasPriceError(error: Error): void {
+        this._errorCount++;
+        if (this._errorCount > MAX_ERROR_COUNT || this._gasPriceEstimation === undefined) {
+            this._errorCount = 0;
+            throw new Error(`Gas price estimation failed: ${error.message}`);
         }
     }
 
