@@ -11,9 +11,7 @@ interface GasPrices {
     fast: number;
     l1CalldataPricePerUnit?: number;
 }
-interface GasInfoResponse {
-    result: GasPrices;
-}
+
 
 interface FuseExplorerResponse {
     gas_prices: {
