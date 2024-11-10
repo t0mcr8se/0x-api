@@ -98,9 +98,10 @@ export class GasPriceUtils {
 
     private async _fetchGasPriceFromFuseExplorer(): Promise<void> {
         const explorerApiKey = process.env.FUSE_EXPLORER_API_KEY;
-        const url = explorerApiKey
-            ? `https://explorer.fuse.io/api/v2/stats?apikey=${explorerApiKey}`
-            : 'https://explorer.fuse.io/api/v2/stats';
+        if (!explorerApiKey) {
+            throw new Error('FUSE_EXPLORER_API_KEY is not set');
+        }
+        const url = `https://explorer.fuse.io/api/v2/stats?apikey=${explorerApiKey}`;
         const response = await axios.get(url);
         const stats: FuseExplorerResponse = response.data;
         this._setGasPrice(stats.gas_prices.fast);
@@ -108,8 +109,11 @@ export class GasPriceUtils {
     }
 
     private async _fetchGasPriceFromRpc(): Promise<void> {
-        const rpcApiKey = process.env.NODE_RPC_API_KEY;
-        const response = await axios.post(`https://node.rpc.fuse.io/v1/${rpcApiKey}`, {
+        const nodeRpcUrl = process.env.NODE_RPC_URL;
+        if (!nodeRpcUrl) {
+            throw new Error('NODE_RPC_URL is not set');
+        }
+        const response = await axios.post(nodeRpcUrl, {
             jsonrpc: '2.0',
             method: 'eth_gasPrice',
             params: [],
