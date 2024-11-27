@@ -1,0 +1,88 @@
+name: Build & Deploy to Kubernetes [PROD]
+
+on:
+  push:
+    branches: ["0x-volt"]
+
+env:
+  OVH_PRIVATE_REGISTRY_ENDPOINT: ${{ vars.OVH_PRIVATE_REGISTRY_ENDPOINT_PROD }}
+  OVH_PRIVATE_REGISTRY_REPOSITORY: ${{ vars.OVH_PRIVATE_REGISTRY_REPOSITORY }}
+  OVH_PRIVATE_REGISTRY_USERNAME: ${{ secrets.OVH_PRIVATE_REGISTRY_USERNAME_PROD }}
+  OVH_PRIVATE_REGISTRY_PASSWORD: ${{ secrets.OVH_PRIVATE_REGISTRY_PASSWORD_PROD }}
+  OVH_K8S_KUBECONFIG: ${{ secrets.OVH_K8S_KUBECONFIG_PROD }}
+  OVH_K8S_HELM_CHART_REPOSITORY: ${{ vars.OVH_K8S_HELM_CHART_REPOSITORY_PROD }}
+  OVH_K8S_HELM_CHART_VERSION: ${{ vars.OVH_K8S_HELM_CHART_VERSION_PROD }}
+  OVH_K8S_HELM_RELEASE_NAME: ${{ vars.OVH_K8S_HELM_RELEASE_NAME }}
+  OVH_K8S_HELM_RELEASE_NAMESPACE: ${{ vars.OVH_K8S_HELM_RELEASE_NAMESPACE }}
+
+jobs:
+  build-and-push:
+    name: Build & Push
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set GitHub commit short SHA
+        run: |
+          CALCULATED_SHA=$(git rev-parse --short ${{ github.sha }})
+          echo "SHORT_SHA=$CALCULATED_SHA" >> $GITHUB_ENV
+
+      - name: Login to OVH (Harbor) private registry
+        run: |
+          docker login \
+            --username ${{ env.OVH_PRIVATE_REGISTRY_USERNAME }} \
+            --password ${{ env.OVH_PRIVATE_REGISTRY_PASSWORD }} \
+            ${{ env.OVH_PRIVATE_REGISTRY_ENDPOINT }}
+
+      - name: Build Docker image(s)
+        run: |
+          docker build \
+            -t ${{ env.OVH_PRIVATE_REGISTRY_ENDPOINT }}/${{ env.OVH_PRIVATE_REGISTRY_REPOSITORY }}/voltage-router:latest \
+            -t ${{ env.OVH_PRIVATE_REGISTRY_ENDPOINT }}/${{ env.OVH_PRIVATE_REGISTRY_REPOSITORY }}/voltage-router:${{ env.SHORT_SHA }} \
+            .
+
+      - name: Push Docker image(s)
+        run: |
+          docker push \
+            --all-tags \
+            ${{ env.OVH_PRIVATE_REGISTRY_ENDPOINT }}/${{ env.OVH_PRIVATE_REGISTRY_REPOSITORY }}/voltage-router
+
+  deploy:
+    name: Deploy
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set GitHub commit short SHA
+        run: |
+          CALCULATED_SHA=$(git rev-parse --short ${{ github.sha }})
+          echo "SHORT_SHA=$CALCULATED_SHA" >> $GITHUB_ENV
+
+      - name: Login to OVH (Harbor) private registry
+        run: |
+          docker login \
+            --username ${{ env.OVH_PRIVATE_REGISTRY_USERNAME }} \
+            --password ${{ env.OVH_PRIVATE_REGISTRY_PASSWORD }} \
+            ${{ env.OVH_PRIVATE_REGISTRY_ENDPOINT }}
+
+      - name: Configure Kubernetes config file
+        run: |
+          mkdir -p $HOME/.kube/
+          echo "${{ env.OVH_K8S_KUBECONFIG }}" | base64 -d > $HOME/.kube/config
+
+      - name: Upgrade installed Helm chart release
+        run: |
+          helm upgrade \
+            --install \
+            --debug \
+            --atomic \
+            --wait \
+            --values helm/values/prod.yaml \
+            --set image.tag=${{ env.SHORT_SHA }} \
+            -n ${{ env.OVH_K8S_HELM_RELEASE_NAMESPACE }} \
+            ${{ env.OVH_K8S_HELM_RELEASE_NAME }} \
+            ${{ env.OVH_K8S_HELM_CHART_REPOSITORY }} \
+            --version ${{ env.OVH_K8S_HELM_CHART_VERSION }}

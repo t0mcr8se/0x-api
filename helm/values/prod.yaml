@@ -1,0 +1,102 @@
+# Default values for voltage-router.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+externalSecrets:
+  secretStoreName: "external-secrets-hashicorp-vault"
+  remoteRefKey: "voltfinance/voltage-router"
+  secretKey:
+    - fuse_explorer_api_key
+    - node_rpc_url
+
+replicaCount: 1
+
+image:
+  repository: 5bz92v92.c1.va1.container-registry.ovh.us/voltfinance/voltage-router
+  # This sets the pull policy for images.
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+
+imagePullSecrets:
+  - name: regcred
+
+nameOverride: ""
+fullnameOverride: ""
+
+command:
+  - yarn
+  - start:service:swap_http
+
+args: []
+
+serviceAccount:
+  create: false
+  automount: true
+  annotations: {}
+  name: ""
+
+deploymentAnnotations:
+  reloader.stakater.com/auto: "true"
+
+podAnnotations: {}
+
+podLabels: {}
+
+podSecurityContext: {}
+
+securityContext: {}
+
+service:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 3000
+      protocol: TCP
+      targetPort: 3000
+
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations: {}
+  hosts:
+    - host: router.voltage.finance
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+    - secretName: voltage-router-tls-certificate
+      hosts:
+        - router.voltage.finance
+
+resources: {}
+
+livenessProbe:
+  httpGet:
+    path: /
+    port: http
+readinessProbe:
+  httpGet:
+    path: /
+    port: http
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  targetMemoryUtilizationPercentage: 80
+
+volumes: []
+
+volumeMounts: []
+
+configMap:
+  chain_id: "122"
+  ethereum_rpc_url: "https://rpc.fuse.io"
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
